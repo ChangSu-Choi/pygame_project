@@ -78,8 +78,6 @@ balls.append({
 # 폰트 정의
 game_font = pygame.font.Font(None, 40) # 폰트 객체 생성 (폰트, 크기)
 
-# 총 시간
-total_time = 10
 
 # 시간 시간
 start_ticks = pygame.time.get_ticks() # 현재 tick 을 받아줌
@@ -88,7 +86,7 @@ start_ticks = pygame.time.get_ticks() # 현재 tick 을 받아줌
 # 이벤트 루프
 running = True # 게임이 진행중인가?
 while running:
-    dt = clock.tick(144) # 게임화면의 초당 프레임 수를 설정
+    dt = clock.tick(60) # 게임화면의 초당 프레임 수를 설정
     print("fps: " + str(clock.get_fps()))
 
     # 2. 이벤트 처리 (키보드, 마우스 등)
@@ -145,6 +143,9 @@ while running:
             ball_val["to_y"] = ball_val["init_spd_y"]
         else:   # 그 외는 모든 경우에는 속도를 증가
             ball_val["to_y"] += 0.5
+
+        ball_val["pos_x"] += ball_val["to_x"]
+        ball_val["pos_y"] += ball_val["to_y"]
     # 4. 충돌 처리
  
 
@@ -154,6 +155,11 @@ while running:
     for weapon_x_pos, weapos_y_pos in weapons:
         screen.blit(weapon, (weapon_x_pos, weapos_y_pos))
 
+    for idx, val in enumerate(balls):
+        ball_pos_x = val["pos_x"]
+        ball_pos_y = val["pos_y"]
+        ball_img_idx = val["img_idx"]
+        screen.blit(ball_images[ball_img_idx], (ball_pos_x, ball_pos_y))
 
     screen.blit(stage, (0, screen_height - stage_height))
     screen.blit(character, (character_x_pos, character_y_pos))
